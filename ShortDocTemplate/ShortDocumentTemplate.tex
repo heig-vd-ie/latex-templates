@@ -1,0 +1,174 @@
+% ======================================================================
+%  CleanWhite Doc -- template sobre pour documents courts (1--10 pages)
+%  Compte rendu de labo / proposition de projet / contrôle continu
+%  Compiler avec pdflatex (2 fois pour les références croisées)
+%  By Daniel Siemaszko and Lumo 2.0, HES-SO HEIG-VD, 2024
+% ======================================================================
+\documentclass[a4paper,11pt]{article}
+
+% ------------------------- PACKAGES -----------------------------------
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}       % typographie française (espaces, guillemets)
+\usepackage{geometry}
+\geometry{margin=1.6cm, headheight=15pt}
+\usepackage{microtype}            % finesse typographique
+\usepackage{graphicx}
+\usepackage{booktabs}             % tableaux propres
+\usepackage{amsmath}
+\usepackage[colorlinks=true, linkcolor=accenthesso,
+            urlcolor=accenthesso, citecolor=accenthesso,
+            pdftitle={\title{}}, pdfauthor={\author{}}]{hyperref}
+
+% ------------------------- COULEUR & STYLE ---------------------------
+\usepackage{xcolor}
+\definecolor{accent}{RGB}{225,37,27}
+\definecolor{accenthesso}{RGB}{0,96,156}
+\definecolor{textgrey}{RGB}{150,139,131}
+
+\usepackage{titlesec}
+\titleformat{\section}
+  {\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}
+  {\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.6em}
+\titlespacing*{\subsection}{0pt}{1.2em}{0.4em}
+
+\graphicspath{{../Figures/}}
+
+% ======================================================================
+%  ÉDITER ICI -- métadonnées du document
+% ======================================================================
+\newcommand{\DocTitle}{Titre du Document}
+\newcommand{\DocSubtitle}{Sous-titre du document}
+\newcommand{\DocCourse}{Mini-projet -- Module XYZ}
+\newcommand{\DocAuthor}{Jane Doe, John Smith}
+\newcommand{\DocDate}{16 septembre 2026}
+\title{\DocTitle}
+\author{\DocAuthor}
+
+% Logo discret en haut à droite de la première page (optionnel)
+\newif\ifshowlogo
+\showlogotrue                    % \showlogofalse pour masquer
+\newcommand{\LogoLeft}{\includegraphics[height=1.4cm]{IE_HEIG-VD_logotype_rouge_rvb}}
+\newcommand{\LogoRight}{\includegraphics[height=3.6cm]{HES_SO_Logo_RGB}}
+
+% ======================================================================
+%  PIED DE PAGE (à partir de la page 2 uniquement)
+% ======================================================================
+\usepackage{fancyhdr}
+\fancypagestyle{mainpage}{%
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \fancyfoot[L]{\footnotesize\color{textgrey}\DocTitle\;$\cdot$\;\DocCourse\;$\cdot$\;\DocAuthor\;$\cdot$\;\DocDate}
+  \fancyfoot[R]{\footnotesize\color{textgrey}\thepage}
+}
+% Style de la 1re page : rien du tout
+\fancypagestyle{firstpage}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+\pagestyle{mainpage}
+
+% ======================================================================
+%  BLOC DE TITRE PERSONNALISÉ (1re page)
+% ======================================================================
+\makeatletter
+\newcommand{\makedoctitle}{%
+  \thispagestyle{firstpage}       % pas de pied de page page 1
+  \begin{center}
+    \ifshowlogo
+          % ----- ligne des logos : un à gauche, un à droite -----
+      
+        \noindent
+      \begin{minipage}[c]{0.3\textwidth}
+        \vspace{-3em}
+        \raggedright\LogoLeft
+      \end{minipage}%
+      \hfill
+      \begin{minipage}[c]{0.3\textwidth}
+        \vspace{-3em}
+        \raggedleft\LogoRight\hspace*{-1cm}
+      \end{minipage}
+      \par
+      \vspace{1em}
+    \fi
+    {\LARGE\bfseries\color{accent}\DocTitle\par}
+    \vspace{0.4em}
+    {\large\color{textgrey}\DocSubtitle\par}
+    \vspace{0.9em}
+    {\color{accent!60}\rule{0.35\linewidth}{0.6pt}\par}
+    \vspace{0.9em}
+    {\normalsize\@author\par}
+    \vspace{0.3em}
+    {\small\color{textgrey}\DocCourse\par}
+    \vspace{0.2em}
+    {\small\color{textgrey}\DocDate\par}
+  \end{center}
+  \vspace{1.2em}
+}
+\makeatother
+%    (les \@title etc. ci-dessus nécessitent le makeatletter englobant)
+
+% ======================= CORPS DU DOCUMENT =============================
+\begin{document}
+
+\makedoctitle
+
+% ---------------------- Résumé (abstract français) --------------------
+\begin{center}
+  {\bfseries\color{accent} Résumé}
+\end{center}
+\begin{quote}
+  \small
+  \noindent
+  Ce document présente... (deux à cinq phrases : objectif, méthode,
+  résultat principal, conclusion).
+\end{quote}
+\noindent\hspace*{\fill}{\small\textbf{Mots-clés :} mot-clé 1, mot-clé 2\hspace*{\fill}}
+
+\vspace{0.6em}
+
+% ---------------------- Contenu habituel ------------------------------
+\section{Introduction}
+Texte d'introduction. Les références croisées fonctionnent :
+la \autoref{fig:exemple} montre un résultat, le
+\autoref{tab:resultats} les résume.
+
+\subsection{Contexte}
+Un peu de contexte ici.
+
+\section{Dispositif expérimental}
+Description du montage, des conditions, etc.
+
+\section{Résultats et analyse}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\linewidth]{example-image-a}
+  \caption{Légende de la figure.}
+  \label{fig:exemple}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Mesures obtenues.}
+  \label{tab:resultats}
+  \begin{tabular}{lcc}
+    \toprule
+    \textcolor{accent}{\textbf{Essai}} &
+    \textcolor{accent}{\textbf{Tension (V)}} &
+    \textcolor{accent}{\textbf{Courant (mA)}} \\
+    \midrule
+    1 & 5{,}0 & 12{,}3 \\
+    2 & 5{,}1 & 12{,}6 \\
+    3 & 5{,}0 & 12{,}4 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Conclusion}
+Synthèse et perspectives.
+
+\end{document}
