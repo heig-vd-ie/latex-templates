@@ -24,11 +24,10 @@
 \date[09.09.2026]{September 9, 2026}
 
 \newcommand{\ProjectName}{My Awesome Project}   % shown in footer
-\newcommand{\AccentColor}{blue!65!black}        % try e.g. teal!70!black
 
-%confidential
+%confidentiality flag: set to true or false
 \newif\ifconfidential
-\confidentialtrue   % set to \confidentialfalse or \confidentialfalse
+\confidentialfalse   % set to \confidentialfalse or \confidentialtrue
 
 % Corner logos (replace file names; or set \showcornerlogosfalse)
 \newif\ifshowcornerlogos
@@ -37,7 +36,7 @@
 \newcommand{\LogoBottomLeft}{\includegraphics[height=2cm]{HES_SO_Logo_RGB}}
 
 % ======================================================================
-%  THEME: all white, hairlines only, one accent color
+%  THEME: all white, hairlines only, one (or two) accent color
 % ======================================================================
 \definecolor{accent}{RGB}{225,37,27}
 \definecolor{accenthesso}{RGB}{0,96,156}
@@ -106,7 +105,7 @@
   \vspace*{5.7ex}%
 }
 
-% ---------- Corner logos (background canvas) ---------------------------
+% ------ Corner logos and stamp (background canvas) --------------------
 
 \makeatletter
 \addtobeamertemplate{background canvas}{}{%
