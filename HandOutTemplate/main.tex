@@ -1,0 +1,215 @@
+\documentclass[11pt,a4paper,oneside]{book}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\frenchbsetup{StandardLists=true}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{eso-pic}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{array} 
+\usepackage{makecell} 
+\usepackage{rotating}
+\usepackage{subcaption}
+\usepackage{amsmath}    % mise en forme math
+\usepackage{amsthm} 
+\usepackage{changepage}
+% --- EXAMPLE : en bleu ---
+\newtheoremstyle{accentexample}
+  {10pt}{10pt}                          % space above/below
+  {\normalfont}                         % body font
+  {}                                    % indent
+  {\bfseries\color{accenthesso}}        % head font — the accent
+  {}                                    % punctuation after head
+  {\newline}                               % space after head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ -- #3}}
+\theoremstyle{accentexample}
+\newtheorem{examplein}{Example}[chapter]
+% --- Wrapper: bar over the head + reduced left/right margins ---
+\newenvironment{example}[1][]{%
+  \par\vspace{0pt}%
+  \begin{adjustwidth}{2.5em}{2.5em}%        % ← bleeds into both margins
+  \noindent{\color{accenthesso!60}\rule{0.35\linewidth}{0.6pt}}\par\nobreak\vspace{-1pt}%
+  \begin{examplein}[#1]\ignorespaces
+}{%
+  \end{examplein}%
+  \end{adjustwidth}%
+  \vspace{0pt}%
+}
+% --- IMPORTANT : même design que example, mais en rouge ---
+\newtheoremstyle{accentimportant}
+  {10pt}{10pt}                          % space above/below
+  {\normalfont}                         % body font
+  {}                                    % indent
+  {\bfseries\color{accent}}             % head font — HEIG-VD
+  {}                                    % punctuation after head
+  {\newline}                            % space after head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ -- #3}}
+\theoremstyle{accentimportant}
+\newtheorem{importantin}{Remarque}[chapter]
+% --- Wrapper: bar over the head + reduced left/right margins ---
+\newenvironment{important}[1][]{%
+  \par\vspace{0pt}%
+  \begin{adjustwidth}{2.5em}{2.5em}%
+  \noindent{\color{accent}\rule{0.35\linewidth}{0.6pt}}\par\nobreak\vspace{-1pt}%
+  \begin{importantin}[#1]\ignorespaces
+}{%
+  \end{importantin}%
+  \end{adjustwidth}%
+  \vspace{0pt}%
+}
+
+
+\usepackage{eqnarray}   % pour equationarray
+\usepackage{dcolumn}    % pour equationarray
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{wasysym}
+\usepackage{fancyhdr}
+\usepackage{siunitx}
+\usepackage{listings}
+\usepackage{rotating}
+\setlength{\marginparwidth}{2cm}
+\usepackage{todonotes}
+\usepackage{enumitem}
+\setlist[itemize]{itemsep=0pt, parsep=0pt, topsep=4pt, rightmargin=2.5em}
+\setlist[enumerate,1]{label=\textcolor{accent}{\arabic*.}}
+
+% ---- Styles de listes nommés ----
+\newlist{packeditem}{itemize}{1}
+\setlist[packeditem]{itemsep=0pt, parsep=0pt, topsep=2pt,
+  rightmargin=2.5em}
+
+\newlist{aireditem}{itemize}{1}
+\setlist[aireditem]{itemsep=1.5ex, topsep=6pt,
+  rightmargin=2.5em, label=\textcolor{accent}{\textbullet}}
+
+\newlist{packedenum}{enumerate}{1}
+\setlist[packedenum]{itemsep=0pt, parsep=0pt, topsep=2pt,
+  rightmargin=2.5em, label=\textcolor{accent}{\arabic*.}}
+
+\newlist{airenum}{enumerate}{1}
+\setlist[airenum]{itemsep=1.5ex, topsep=6pt,
+  rightmargin=2.5em, label=\textcolor{accent}{\arabic*.}}
+
+\usepackage{pgfplots} \pgfplotsset{compat=1.17}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\graphicspath{{./Figures/}}
+
+% ---- Palette Bachelor -- accordée à accenthesso / accentheigvd / textgrey ----
+\definecolor{accent}{RGB}{225,37,27}      % rouge HEIG-VD (vermillon)
+\definecolor{accenthesso}{RGB}{0,96,156}       % bleu institutionnel HES-SO
+\definecolor{textgrey}{RGB}{150,139,131}       % gris chaud
+
+\definecolor{accentgreen}{RGB}{0,132,86}        % vert profond
+\definecolor{accentpurple}{RGB}{108,60,158}     % violet moyen
+\definecolor{accentorange}{RGB}{232,116,17}     % orange soutenu
+\definecolor{accentpink}{RGB}{206,54,104}       % rose cerise
+\definecolor{accentteal}{RGB}{0,142,148}        % turquois sobre
+\definecolor{accentgold}{RGB}{172,134,0}        % ocre doré
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks = true,        % kills the boxes, paints the text instead
+  linkcolor  = accenthesso,% internal refs (\autoref, \pageref...)
+  citecolor  = accenthesso,
+  urlcolor   = accenthesso,
+}
+
+\usepackage{svg}
+% Avoid calling "inkscape -V" for auto-detection: that pipe call crashes
+% pdflatex on some MiKTeX versions (fread "Invalid argument" in inputline.cpp).
+\svgsetup{inkscapeversion=1}
+% ---- Auto-detect Inkscape location (Mac / Windows / PATH) ----
+\IfFileExists{/Applications/Inkscape.app/Contents/MacOS/inkscape}{%
+  % --- macOS ---
+  \svgsetup{inkscapeexe=/Applications/Inkscape.app/Contents/MacOS/inkscape}%
+}{%
+  \IfFileExists{C:/Program Files/Inkscape/bin/inkscape.exe}{%
+    % --- Windows ---
+    \def\InkscapePath{"C:\Program Files\Inkscape\bin\inkscape.exe"} 
+  }{%
+    % --- Neither found: rely on PATH (Linux, custom installs) ---
+    \typeout{WARNING: Inkscape not found at standard locations; hoping it's on PATH}%
+  }%
+}
+ 
+\fancyhf{}
+
+\renewcommand{\baselinestretch}{1.05}
+ 
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\blap}[1]{\vbox to 0pt{#1\vss}}
+\newcommand\AtUpperLeftCorner[3]{%
+  \put(\LenToUnit{#1},\LenToUnit{\dimexpr\paperheight-#2}){\blap{#3}}%
+}
+\newcommand\AtUpperRightCorner[3]{%
+  \put(\LenToUnit{\dimexpr\paperwidth-#1},\LenToUnit{\dimexpr\paperheight-#2}){\blap{\llap{#3}}}%
+}
+
+%\setlength{\topmargin}{1cm}
+\setlength{\parindent}{0pt}
+\parskip=5pt
+
+\newcommand{\pdd}[1]{\cdot 10^{#1}} % Ecrire puissance de dix.
+
+\title{\LARGE{Électronique de Puissance II}}
+\author{Daniel \textsc{Siemaszko}}
+\date{\today}
+\makeatletter
+ 
+\begin{document}
+\hypersetup{pageanchor=false}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ 
+\begin{titlepage}
+    \AddToShipoutPicture{
+        \AtUpperLeftCorner{1cm}{1cm}{\includegraphics[height=1.9cm]{IE_HEIG-VD_logotype_rouge_rvb.png}}
+        \AtUpperRightCorner{-0.5cm}{-0.5cm}{\includegraphics[height=5cm]{HES_SO_Logo_RGB.png}}}
+    \begin{center}
+        \vspace*{10cm}
+        \textsc{\@title}
+        \HRule
+        \vspace*{5cm}
+        \large{\@author} \\ 
+        \vspace*{2cm}
+        \large{\@date}
+    \end{center}
+ 
+     
+\end{titlepage}
+\ClearShipoutPicture
+\hypersetup{pageanchor=true}
+%\dominitoc  
+\newpage
+ 
+% ---- TOC in plain black, links elsewhere stay accentmaster ----
+\begingroup
+\hypersetup{linkcolor=black}
+\tableofcontents
+\endgroup
+
+\input{./Content/Abbreviations.tex}
+\part{Convertisseurs DC/AC et AC/DC}
+\input{./Content/Chap_exemple.tex}
+% \input{./Content/Chap1.tex}
+% \input{./Content/Chap2.tex}
+% \input{./Content/Chap3.tex}
+% \input{./Content/Chap4.tex}
+% \part{Convertisseurs DC/DC bidirectionnels isolés}
+% \input{./Content/Chap5.tex}
+% \input{./Content/Chap6.tex}
+% \input{./Content/Chap7.tex}
+\appendix
+\part*{Annexes}
+\input{./Content/appendix.tex}
+
+\end{document}

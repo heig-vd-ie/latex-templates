@@ -10,11 +10,16 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[french]{babel}       % typographie française (espaces, guillemets)
+\frenchbsetup{StandardLists=true}
 \usepackage{geometry}
 \geometry{margin=1.6cm, headheight=15pt}
 \usepackage{microtype}            % finesse typographique
 \usepackage{graphicx}
 \usepackage{booktabs}             % tableaux propres
+\usepackage{tikz}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{wrapfig}
 \usepackage{amsmath}
 \usepackage[colorlinks=true, linkcolor=accenthesso,
             urlcolor=accenthesso, citecolor=accenthesso,
@@ -25,6 +30,21 @@
 \definecolor{accent}{RGB}{225,37,27}
 \definecolor{accenthesso}{RGB}{0,96,156}
 \definecolor{textgrey}{RGB}{150,139,131}
+
+\definecolor{accentgreen}{RGB}{0,132,86}        % vert profond
+\definecolor{accentpurple}{RGB}{108,60,158}     % violet moyen
+\definecolor{accentorange}{RGB}{232,116,17}     % orange soutenu
+\definecolor{accentpink}{RGB}{206,54,104}       % rose cerise
+\definecolor{accentteal}{RGB}{0,142,148}        % turquois sobre
+\definecolor{accentgold}{RGB}{172,134,0}        % ocre doré
+
+\usepackage{enumitem}
+\setlist[itemize]{itemsep=0pt, parsep=0pt, topsep=4pt, rightmargin=2.5em}
+\setlist[enumerate,1]{label=\textcolor{accent}{\arabic*.}}
+
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4em}
 
 \usepackage{titlesec}
 \titleformat{\section}
@@ -140,7 +160,15 @@ la \autoref{fig:exemple} montre un résultat, le
 Un peu de contexte ici.
 
 \section{Dispositif expérimental}
-Description du montage, des conditions, etc.
+\begin{enumerate}
+  \item Matériel utilisé
+  \item Méthode expérimentale
+  \begin{itemize}
+    \item Sous-étape 1
+    \item Sous-étape 2
+  \end{itemize}
+  \item Paramètres mesurés
+\end{enumerate}
 
 \section{Résultats et analyse}
 

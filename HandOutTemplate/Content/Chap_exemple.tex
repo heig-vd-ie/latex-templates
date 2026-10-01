@@ -1,0 +1,309 @@
+% =====================================================================
+%  CHAPITRE D'EXEMPLE -- démonstration des styles du polycopié
+%  (à supprimer ou renommer une fois les styles adoptés)
+% =====================================================================
+\chapter{Guide des styles du polycopié}
+\label{chap:styles}
+
+Ce chapitre d'exemple illustre les conventions typographiques utilisées
+dans l'ensemble du document : environnements \textit{exemple} (bleu) et
+\textit{remarque importante} (rouge), tableaux, figures TikZ et figures
+vectorielles exportées depuis Inkscape. Les grandeurs sont exprimées
+avec \SI{}{} du paquet \texttt{siunitx} : \SI{48}{V}, \SI{10}{kW},
+\SI{100}{kHz}.
+
+% ----------------------------------------------------------------------
+\section{Figures externes (SVG via Inkscape)}
+% ----------------------------------------------------------------------
+
+La figure~\ref{fig:convertisseur_buck} montre un hacheur série
+abaisseur (\emph{buck}). Les figures sources sont des fichiers SVG
+placés dans le dossier \texttt{Figures/} et compilés automatiquement
+par le paquet \texttt{svg}.
+
+\begin{figure}[htbp]
+    \centering
+    \includesvg[width=0.6\textwidth]{Industrial_drive_example.svg}
+    \caption{Hacheur abaisseur de tension (\emph{buck}) : transistor,
+      diode, inductance et condensateur de sortie.}
+    \label{fig:convertisseur_buck}
+\end{figure}
+
+% ----------------------------------------------------------------------
+\section{Figures TikZ et pgfplots}
+% ----------------------------------------------------------------------
+
+Les figures natives TikZ utilisent la palette institutionnelle.
+La figure~\ref{fig:ondulation_courant} représente l'ondulation du
+courant d'inductance en conduction continue.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.85\textwidth, height=5.5cm,
+  xlabel={temps (\si{\milli\second})},
+  ylabel={courant $i_L$ (\si{\ampere})},
+  grid=major, grid style={black!12},
+  axis line style={black!40},
+  tick label style={font=\small},
+  xmin=0, xmax=1, ymin=0, ymax=2.4,
+]
+  % courant triangulaire entre 1 et 2 A
+  \addplot[accent, thick] coordinates
+    {(0,1)(0.125,2)(0.375,1)(0.625,2)(0.875,1)(1,1.5)};
+  % valeur moyenne
+  \addplot[accenthesso, thick, dashed] coordinates {(0,1.5)(1,1.5)};
+  % enveloppe de l'ondulation
+  \addplot[textgrey, dotted, thick] coordinates {(0,2)(1,2)};
+  \addplot[textgrey, dotted, thick] coordinates {(0,1)(1,1)};
+  \legend{$i_L(t)$, $I_L = \SI{1.5}{A}$, $\Delta I_L$}
+\end{axis}
+\end{tikzpicture}
+\caption{Ondulation du courant d'inductance $\Delta I_L = \SI{1}{A}$
+  autour de sa valeur moyenne.}
+\label{fig:ondulation_courant}
+\end{figure}
+
+% ----------------------------------------------------------------------
+\section{Tableaux}
+% ----------------------------------------------------------------------
+
+Le tableau~\ref{tab:convertisseurs_cc} compare les principales
+structures de convertisseurs DC/DC. Les tableaux utilisent
+\texttt{booktabs} : pas de filets verticaux, uniquement
+\texttt{toprule}, \texttt{midrule} et \texttt{bottomrule}.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparaison des convertisseurs DC/DC non isolés.}
+\label{tab:convertisseurs_cc}
+\small
+\begin{tabular}{lccc}
+\toprule
+\textcolor{accenthesso}{\textbf{Structure}} &
+\textcolor{accenthesso}{\textbf{Rapport}} &
+\textcolor{accenthesso}{\textbf{Rendement}} &
+\textcolor{accenthesso}{\textbf{Usage typique}} \\
+\midrule
+Buck (abaisseur)   & $V_o / V_e$           & élevé & alimentations, bus DC \\
+Boost (élévateur)   & $V_e / (V_e - V_o)^{-1}$ & élevé & PFC, récupération \\
+Buck-boost          & $-D/(1-D)$           & moyen & inversion, variation large \\
+\'Cuk               & $-D/(1-D)$           & moyen & entrée/sortie en continu \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Note l'alignement des unités dans le texte courant :
+$V_e = \SI{400}{V}$, $L = \SI{250}{\micro\henry}$.
+
+% ----------------------------------------------------------------------
+\section{Exemples (style bleu)}
+% ----------------------------------------------------------------------
+
+Les exemples apparaissent en bleu, avec filet supérieur et marges
+réduites de part et d'autre.
+
+\begin{example}[Calcul de l'ondulation de courant]
+  Soit un hacheur buck alimentant une charge résistive sous
+  $V_e = \SI{48}{V}$, $V_o = \SI{24}{V}$, avec une fréquence de
+  découpage $f_s = \SI{100}{kHz}$ et une inductance
+  $L = \SI{250}{\micro\henry}$.
+
+  L'ondulation du courant d'inductance vaut
+  \begin{equation}
+    \Delta I_L = \frac{(V_e - V_o)\,D}{L\,f_s}
+               = \frac{(48 - 24)\cdot 0{,}5}{250\mathrm{u}\cdot 10^5}
+               \approx \SI{480}{mA}.
+  \end{equation}
+  Ce dimensionnement garantit la conduction continue dès que le
+  courant moyen dépasse $\Delta I_L / 2 = \SI{240}{mA}$.
+\end{example}
+
+% ----------------------------------------------------------------------
+\section{Remarques importantes (style rouge)}
+% ----------------------------------------------------------------------
+
+Les remarques critiques pour la sécurité ou le bon fonctionnement du
+montage sont signalées en rouge.
+
+\begin{important}[Ne jamais ouvrir le circuit d'inductance]
+  L'interruption brutale du courant dans une inductance provoqu une
+  surtension $v_L = -L\,\mathrm{d}i/\mathrm{d}t$ susceptible de
+  détruire le transistor de découpage. Toujours vérifier la présence
+  d'une diode de roue libre (ou d'un bras actif) \textbf{avant} de
+  mettre sous tension le convertisseur.
+\end{important}
+
+\begin{important}[Choix du condensateur de sortie]
+  Pour respecter une ondulation de tension de sortie
+  $\Delta V_o < \SI{50}{mV}$, le condensateur doit présenter une
+  résistance série (ESR) faible \textbf{et} une valeur suffisante :
+  la composante ESR domine souvent à $f_s = \SI{100}{kHz}$.
+\end{important}
+
+% ----------------------------------------------------------------------
+\section{Palette de couleurs du document}
+% ----------------------------------------------------------------------
+
+Le tableau~\ref{tab:palette} récapitule la palette utilisée dans tout
+le polycopié : le rouge HEIG-VD est réservé aux remarques importantes
+et aux alertes, le bleu HES-SO aux exemples et liens, les teintes
+complémentaires aux graphiques.
+
+\begin{table}[htbp]
+\centering
+\caption{Palette de couleurs du polycopié.}
+\label{tab:palette}
+\small
+\begin{tabular}{llc}
+\toprule
+\textcolor{accenthesso}{\textbf{Couleur}} &
+\textcolor{accenthesso}{\textbf{Usage}} &
+\textcolor{accenthesso}{\textbf{RVB}} \\
+\midrule
+\textcolor{accent}{\rule{0.4cm}{0.25cm}} \texttt{accent} (HEIG-VD)
+  & remarques importantes, alertes & 225, 37, 27 \\
+\textcolor{accenthesso}{\rule{0.4cm}{0.25cm}} \texttt{accenthesso}
+  & exemples, titres, liens & 0, 96, 156 \\
+\textcolor{textgrey}{\rule{0.4cm}{0.25cm}} \texttt{textgrey}
+  & texte secondaire, légendes & 150, 139, 131 \\
+\midrule
+\textcolor{accentgreen}{\rule{0.4cm}{0.25cm}} \texttt{accentgreen}
+  & graphiques (série 1) & 0, 132, 86 \\
+\textcolor{accentpurple}{\rule{0.4cm}{0.25cm}} \texttt{accentpurple}
+  & graphiques (série 2) & 108, 60, 158 \\
+\textcolor{accentorange}{\rule{0.4cm}{0.25cm}} \texttt{accentorange}
+  & graphiques (série 3) & 232, 116, 17 \\
+\textcolor{accentpink}{\rule{0.4cm}{0.25cm}} \texttt{accentpink}
+  & graphiques (série 4) & 206, 54, 104 \\
+\textcolor{accentteal}{\rule{0.4cm}{0.25cm}} \texttt{accentteal}
+  & graphiques (série 5) & 0, 142, 148 \\
+\textcolor{accentgold}{\rule{0.4cm}{0.25cm}} \texttt{accentgold}
+  & graphiques (série 6) & 172, 134, 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------
+\section{Listes et énumérations}
+% ----------------------------------------------------------------------
+
+Les listes à puces utilisent l'espacement compact défini globalement
+(\texttt{itemsep=0pt}, marge droite réduite à \(2{,}5\)~em). Les
+niveaux s'imbriquent avec des marqueurs distincts :
+
+\begin{itemize}
+  \item Premier niveau : puce ronde ;
+  \item les items longs reviennent à la ligne avec la marge droite
+    réduite, ce qui distingue visuellement le bloc liste du texte
+    courant et évite que les lignes touchent la reliure ;
+  \item imbrication sur trois niveaux :
+  \begin{itemize}
+    \item Deuxième niveau : tiret ;
+    \item les sous-niveaux héritent de la même marge réduite ;
+    \begin{itemize}
+      \item Troisième niveau : point ;
+      \item au-delà, préférer restructurer le contenu !
+    \end{itemize}
+  \end{itemize}
+  \item retour au premier niveau.
+\end{itemize}
+
+Les énumérations numérotées ont leurs numéros en rouge HEIG-VD
+(défini par \texttt{label=\textcolor{accent}{\textbackslash arabic*.}}
+dans le préambule) :
+
+\begin{enumerate}
+  \item Dimensionner l'ondulation de courant $\Delta I_L$ ;
+  \item vérifier la condition de conduction continue :
+  $I_{load} > \Delta I_L / 2$ ;
+  \item choisir la fréquence de découpage selon le compromis
+    pertes--volume :
+  \begin{enumerate}
+    \item pertes de commutation croissantes avec $f_s$ ;
+    \item volume des composants magnétiques décroissant avec $f_s$.
+  \end{enumerate}
+  \item valider thermiquement le choix des semi-conducteurs.
+\end{enumerate}
+
+% --- Variantes nommées : compact / aéré ---------------------------------
+% (à définir une fois dans le préambule, cf. note en fin de section)
+
+\begin{packedenum}
+  \item liste compacte : \texttt{itemsep=0pt} ;
+  \item utile pour les checklists, algorithmes, énumérations denses.
+\end{packedenum}
+
+\begin{airenum}
+  \item liste aérée : \texttt{itemsep=1.5ex} ;
+  \item utile pour les étapes d'un raisonnement long,
+  \item ou les instructions de manipulation de laboratoire.
+\end{airenum}
+
+Les descriptions associatives restent utiles pour les glossaires de
+symboles :
+
+\begin{description}[font=\normalfont\bfseries\color{accenthesso}]
+  \item[$D$] rapport cyclique du hacheur, $0 \le D \le 1$ ;
+  \item[$f_s$] fréquence de découpage (\si{\kilo\hertz}) ;
+  \item[$\eta$] rendement du convertisseur (\si{\percent}).
+\end{description}
+
+Enfin, les énumérations \emph{en ligne} (dans une phrase) s'obtiennent
+avec la version étoilée du paquet \texttt{enumitem} : les étapes du
+calcul sont a) identifier les intervalles de conduction, b) appliquer
+la loi des mailles sur chaque intervalle, c) moyenner les équations
+pour obtenir la relation entrée-sortie. (Voir note ci-dessous pour la
+syntaxe exacte.)
+
+% ----------------------------------------------------------------------
+\section{Références croisées et citations}
+% ----------------------------------------------------------------------
+
+Le lecteur est renvoyé au chapitre~\ref{chap:styles}, à la
+figure~\ref{fig:ondulation_courant} et au
+tableau~\ref{tab:convertisseurs_cc}. Les références
+bibliographiques suivent le style \texttt{plain}~\cite{mohan}.
+
+% ============================================================
+% RÉFÉRENCES
+% ============================================================
+\begin{thebibliography}{9}
+
+\bibitem{teodorescu2011}
+R.~Teodorescu, M.~Liserre, P.~Rodriguez,
+\emph{Grid Converters for Photovoltaic and Wind Power Systems},
+John Wiley \& Sons, 2011.
+[Illustrations de référence : phaseurs spatiaux, réseaux forts/faibles,
+défauts asymétriques.]
+
+\bibitem{akagi}
+H.~Akagi, E.~H.~Watanabe, M.~Aredes,
+\emph{Instantaneous Power Theory and Applications to Power
+Conditioning}, IEEE Press / Wiley, 2007.
+[Théorie $p$-$q$ et filtres actifs.]
+
+\bibitem{bossoney}
+L.~Bossoney, \emph{Électronique de Puissance I, Partie 4 : Power
+Factor Correction (PFC)}, HEIG-VD, 2008.
+[Base des sections PFC et des exercices du chapitre 2.]
+
+\bibitem{ieciec61000}
+IEC 61000-2-4, \emph{Compatibility levels in industrial plants for
+low-frequency conducted disturbances} ; IEC 61000-3-2, \emph{Limits
+for harmonic current emissions}.
+[Normes de compatibilité et d'émissions harmoniques.]
+
+\bibitem{erickson}
+R.~W.~Erickson, D.~Maksimović,
+\emph{Fundamentals of Power Electronics}, 3\ieme{} éd., Springer, 2020.
+[Convertisseurs DC/DC : boost, SEPIC, modes de conduction.]
+
+\bibitem{mohan}
+N.~Mohan, T.~M.~Undeland, W.~P.~Robbins,
+\emph{Power Electronics: Converters, Applications, and Design},
+3\ieme{} éd., Wiley, 2003.
+[Applications industrielles, redresseurs, entraînements.]
+
+\end{thebibliography}

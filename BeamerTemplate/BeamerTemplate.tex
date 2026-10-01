@@ -14,6 +14,25 @@
 \usepackage{pgfplots}
 \graphicspath{{../Figures/}}
 \pgfplotsset{compat=1.17}
+\usetikzlibrary{positioning,arrows.meta,calc}
+
+\usepackage{svg}
+% Avoid calling "inkscape -V" for auto-detection: that pipe call crashes
+% pdflatex on some MiKTeX versions (fread "Invalid argument" in inputline.cpp).
+\svgsetup{inkscapeversion=1}
+% ---- Auto-detect Inkscape location (Mac / Windows / PATH) ----
+\IfFileExists{/Applications/Inkscape.app/Contents/MacOS/inkscape}{%
+  % --- macOS ---
+  \svgsetup{inkscapeexe=/Applications/Inkscape.app/Contents/MacOS/inkscape}%
+}{%
+  \IfFileExists{C:/Program Files/Inkscape/bin/inkscape.exe}{%
+    % --- Windows ---
+    \def\InkscapePath{"C:\Program Files\Inkscape\bin\inkscape.exe"} 
+  }{%
+    % --- Neither found: rely on PATH (Linux, custom installs) ---
+    \typeout{WARNING: Inkscape not found at standard locations; hoping it's on PATH}%
+  }%
+}
 
 % ======================================================================
 %  EDIT ME -- presentation metadata & branding
@@ -38,9 +57,17 @@
 % ======================================================================
 %  THEME: all white, hairlines only, one (or two) accent color
 % ======================================================================
-\definecolor{accent}{RGB}{225,37,27}
-\definecolor{accenthesso}{RGB}{0,96,156}
-\definecolor{textgrey}{RGB}{150,139,131}
+% ---- Palette Bachelor -- accordée à accenthesso / accentheigvd / textgrey ----
+\definecolor{accent}{RGB}{225,37,27}          % rouge HEIG-VD (vermillon)
+\definecolor{accenthesso}{RGB}{0,96,156}       % bleu institutionnel HES-SO
+\definecolor{textgrey}{RGB}{150,139,131}       % gris chaud
+
+\definecolor{accentgreen}{RGB}{0,132,86}        % vert profond
+\definecolor{accentpurple}{RGB}{108,60,158}     % violet moyen
+\definecolor{accentorange}{RGB}{232,116,17}     % orange soutenu
+\definecolor{accentpink}{RGB}{206,54,104}       % rose cerise
+\definecolor{accentteal}{RGB}{0,142,148}        % turquois sobre
+\definecolor{accentgold}{RGB}{172,134,0}        % ocre doré
 
 \setbeamercolor{background canvas}{bg=white}
 \setbeamercolor{normal text}{fg=black!87}
@@ -240,6 +267,45 @@
     \end{tikzpicture}
     \caption{Proposed scheme versus baseline.}
   \end{figure}
+\end{frame}
+
+% ----------------------------------------------------------------------
+% Démo de la palette de couleurs (Bachelor)
+% ----------------------------------------------------------------------
+\begin{frame}{Palette de couleurs}{Accords harmonisés avec les teintes institutionnelles}
+  \begin{center}
+    \begin{tikzpicture}
+      \foreach \name/\rgb/\disp [count=\i from 0] in {
+          accenthesso/{0,96,156}/{HES-SO (bleu institutionnel)},
+          accent/{225,37,27}/{HEIG-VD (rouge vermillon)},
+          accentgreen/{0,132,86}/{Vert profond},
+          accentpurple/{108,60,158}/{Violet moyen},
+          accentorange/{232,116,17}/{Orange soutenu},
+          accentpink/{206,54,104}/{Rose cerise},
+          accentteal/{0,142,148}/{Turquoise sobre},
+          accentgold/{172,134,0}/{Ocre doré}}
+      {
+        \pgfmathsetmacro{\row}{int(div(\i,4))}     % 0 = ligne 1, 1 = ligne 2
+        \pgfmathsetmacro{\col}{int(mod(\i,4))}     % position dans la ligne
+        \begin{scope}[shift={(\col*3.1,-\row*1.9)}]
+          \fill[\name, rounded corners=2pt] (0,0) rectangle (1.1,0.9);
+          \node[anchor=west, text width=2.0cm, align=left]
+            at (1.25,0.62)
+            {\scriptsize\bfseries\textcolor{\name}{\name}};
+          \node[anchor=west]
+            at (1.25,0.30)
+            {\tiny\color{black!60} RVB \rgb};
+          \node[anchor=west]
+            at (1.25,0.02)
+            {\tiny\color{black!60} \disp};
+        \end{scope}
+      }
+    \end{tikzpicture}
+  \end{center}
+  \vspace{0.4em}
+  {\small Les couleurs partagent une luminosité comparable ($\approx$40--50\,\%),
+   garantissant lisibilité en texte et cohérence dans les graphiques,
+   y compris en impression niveaux de gris.}
 \end{frame}
 
 % ------- External figure --------------------------------------------------
