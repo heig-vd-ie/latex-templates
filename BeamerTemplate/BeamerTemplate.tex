@@ -10,8 +10,11 @@
 \usepackage{lmodern}
 \usepackage{graphicx}
 \usepackage{booktabs}                 % clean tables
+\usepackage{amsmath} 
 \usepackage{tikz}
+\usepackage{circuitikz}
 \usepackage{pgfplots}
+\usepackage[normalem]{ulem}
 \graphicspath{{../Figures/}}
 \pgfplotsset{compat=1.17}
 \usetikzlibrary{positioning,arrows.meta,calc}
@@ -42,7 +45,8 @@
 \author[Doe \& Smith]{Jane Doe, John Smith}
 \date[09.09.2026]{September 9, 2026}
 
-\newcommand{\ProjectName}{My Awesome Project}   % shown in footer
+\newcommand{\ProjectName}{My Awesome Project}   % shown in title page
+\newcommand{\ProjectFootName}{My Project}   % shown in footer
 
 %confidentiality flag: set to true or false
 \newif\ifconfidential
@@ -84,6 +88,7 @@
 \setbeamercolor{block title}{fg=black!87,bg=white}
 \setbeamercolor{block body}{fg=black!80,bg=white}
 \setbeamercolor{caption}{fg=textgrey}
+\setbeamercolor{block title example}{fg=accenthesso}
 
 \setbeamerfont{frametitle}{size=\large,series=\bfseries}
 \setbeamerfont{framesubtitle}{size=\footnotesize}
@@ -121,8 +126,8 @@
   \hbox{%
     \hspace*{40ex}%
     {\footnotesize\color{textgrey}%
-      \insertshorttitle\;$\cdot$\;\insertshortsubtitle%
-      \;$\cdot$\;\ProjectName%
+      \ProjectFootName\;$\cdot$\;\insertshorttitle\;$\cdot$\;\insertshortsubtitle%
+      %\;$\cdot$\;\ProjectName%
       \;$\cdot$\;\insertshortauthor%
       \;$\cdot$\;\insertshortdate}%
     %\hfill%
